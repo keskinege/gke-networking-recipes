@@ -17,8 +17,10 @@ GKE is a managed Kubernetes platform that provides a more opinionated and seamle
   - [IAP Ingress](./ingress/single-cluster/ingress-iap) - GKE Ingress with Identity-Aware Proxy based authentication.
   - [CloudArmor Ingress](./ingress/single-cluster/ingress-cloudarmor) - GKE Ingress with Google CloudArmor policy protection.
   - [Nginx Ingress](./ingress/single-cluster/ingress-nginx) - Deploy an internet-facing HTTP load balancer with Nginx Ingress. 
+  - [Custom default backend Ingress](./ingress/single-cluster/ingress-custom-default-backend) - GKE Ingress with custom default backend.
   - [Custom HTTP health check Ingress](./ingress/single-cluster/ingress-custom-http-health-check) - GKE Ingress with custom HTTP based health check.
   - [Custom gRPC health check Ingress](./ingress/single-cluster/ingress-custom-grpc-health-check) - GKE Ingress with custom gRPC based health check.
+  - [Istio Ingress Gateway with multiple Backend Configs](./ingress/single-cluster/ingress-asm-multi-backendconfig) - Deploy ASM ingress gateway to run multiple different backends with different Backend Configs
 
 - Multi-cluster Ingress
   - [Basic Multi-cluster Ingress](./ingress/multi-cluster/mci-basic) - Deploy applications across different clusters and different regions but retain a single global load balancer and public IP for global traffic management.
@@ -40,6 +42,10 @@ GKE is a managed Kubernetes platform that provides a more opinionated and seamle
   - [Single Cluster Global LoadBalancer](./gateway/single-cluster/global-l7-xlb) - Deploy an application and expose it with the Gateway API using the GatewayClass gke-l7-xlb.
   - [Single Cluster Global LoadBalancer HTTPS between the GCLB and the Backend app](./gateway/single-cluster/global-l7-xlb-https-backend) - Deploy an app behind a Global LoadBalancer with the GatewayClass gke-l7-xlb and encrypt traffic between the LB and the backend app using HAProxy.
   - [Single Cluster Regional Internal LoadBalancer](./gateway/single-cluster/regional-l7-ilb) - Deploy an application and expose it with the Gateway API using the GatewayClass gke-l7-rilb.
+
+### Testing the recipes
+
+See [test/README.md](test/README.md) for instructions on how to run the examples recipes against your project.
 
 ### Contributions
 

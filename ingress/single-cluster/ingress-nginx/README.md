@@ -19,10 +19,12 @@ GKE allows customers to deploy their own Ingress Controllers instead of the stan
 - 1.16.5-gke.1 and later.
 
 
+## Note
+NGINX is not one of the GKE offering, this is just an exmaple of using custom controller.
 
 ### Networking Manifests
 
-In this example an internal Ingress resource matches for HTTP traffic with `foo.example.com`  for path `/foo`  and sends it to the `foo` Service at port 8080. A public IP address is automatically provisioned by the Ngnix controller which listens for traffic on port 8080. The Ingress resource below shows that there is one host match. Any traffic which does not match this is sent to the default backend to provide 404 responses.
+In this example an external Ingress resource matches for HTTP traffic with `foo.example.com`  for path `/foo`  and sends it to the `foo` Service at port 8080. A public IP address is automatically provisioned by the Ngnix controller which listens for traffic on port 8080. The Ingress resource below shows that there is one host match. Any traffic which does not match this is sent to the default backend to provide 404 responses.
 
 
 ```yaml
@@ -72,7 +74,7 @@ spec:
 $ git clone https://github.com/GoogleCloudPlatform/gke-networking-recipes.git
 Cloning into 'gke-networking-recipes'...
 
-$ cd gke-networking-recipes/ingress/ingress-ngnix.yaml
+$ cd gke-networking-recipes/ingress/single-cluster/ingress-ngnix
 ```
 2. Ensure that your user has cluster-admin permissions on the cluster. This can be done with the following command:
 
@@ -90,7 +92,7 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/cont
 4. Deploy the Ingress, Deployment, and Service resources in the [ingress-ngnix.yaml](./ingress-nginx.yaml) manifest.
 
 ```bash
-$ kubectl apply -f ingress-ngnix.yaml
+$ kubectl apply -f ingress-nginx.yaml
 ingress.networking.k8s.io/ingress-resource created
 service/foo created
 deployment.apps/foo created
@@ -127,12 +129,13 @@ Please note in the event logs that some firewall rules should be manually config
 
 ```bash
 
-$ curl -H "host: foo.example.com" 34.102.236.246 /foo
+$ curl -H "host: foo.example.com" 34.102.236.246/foo
 
 ```
 
 ### Cleanup
 
 ```bash
-kubectl delete -f ingress-ngnix.yaml
+kubectl delete -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.1.0/deploy/static/provider/cloud/deploy.yaml
+kubectl delete -f ingress-nginx.yaml
 ```

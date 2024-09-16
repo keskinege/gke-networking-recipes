@@ -80,7 +80,7 @@ kind: FrontendConfig
 metadata:
   name: ingress-security-config
 spec:
-  sslPolicy: gke-ingress-ssl-policy
+  sslPolicy: gke-ingress-ssl-policy-https
   redirectToHttps:
     enabled: true
 ```
@@ -123,7 +123,7 @@ Created [https://www.googleapis.com/compute/v1/projects/xxx/global/addresses/gke
 4. Create an SSL policy. This policy specifies a broad set of modern ciphers and requires that clients negotiate using TLS 1.2 or higher.
 
 ```
-$ gcloud compute ssl-policies create gke-ingress-ssl-policy \
+$ gcloud compute ssl-policies create gke-ingress-ssl-policy-https \
     --profile MODERN \
     --min-tls-version 1.2
 ```
@@ -141,7 +141,8 @@ deployment.apps/foo created
 deployment.apps/bar created
 ```
 
-6. It will take up to 15 minutes for everything to be provisioned. You can determine the status by checking the Ingress resource events. When it is ready, the events should look like the following:
+6. It will usually take up to 15 minutes for certificate to be provisioned if DNS records are set up beforehand. If DNS records are configured around the same time as the certificate, it could take up to 60 minutes to provision. For details, see [here](https://cloud.google.com/load-balancing/docs/ssl-certificates/google-managed-certs#replace-ssl).
+You can determine the status by checking the Ingress resource events. When it is ready, the events should look like the following:
 
 
 ```bash
@@ -202,5 +203,15 @@ You are now ready to serve securely on the internet!
 ```bash
 $ kubectl delete -f secure-ingress.yaml
 $ gcloud compute addresses delete --global gke-foobar-public-ip
-$ gcloud compute ssl-policies delete gke-ingress-ssl-policy
+$ gcloud compute ssl-policies delete gke-ingress-ssl-policy-https
+```
+
+### Testing
+The test for this recipe will be skipped if the required environment variables are not set.
+To run the test, you need to have a project($DNS_PROJECT) that has Cloud DNS enabled. In this project, set up a public DNS zone with a DNS domain you control. See `Create a managed public zone in Cloud DNS` in [setup guide](https://cloud.google.com/dns/docs/set-up-dns-records-domain-name).
+Then export the zone name and DNS name as environment variables. Make sure the current service account has role/dns_admin access to the DNS project. 
+```
+export DNS_PROJECT=dns-project \
+export DNS_ZONE=example-zone-name
+export DNS_NAME=myzone.example.com
 ```
